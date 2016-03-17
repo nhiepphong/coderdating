@@ -1,7 +1,11 @@
 class UsersController < ApplicationController
 
   def new
-    @user = User.new
+  	if session[:user_id]
+  		redirect_to root_path
+  	else
+    	@user = User.new
+    end
   end
 
   def index
@@ -11,8 +15,10 @@ class UsersController < ApplicationController
   def create
   	@user = User.create user_params
   	if @user.persisted?
-  		redirect_to users_path
+  		session[:user_id] = @user.id
+  		redirect_to users_path, flash: {success: "Register successfully!"}
   	else
+  		flash.now[:error] = "Register error"
   		render 'new'
   	end
   end
