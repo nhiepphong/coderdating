@@ -2,7 +2,7 @@ class UsersController < ApplicationController
 
   def new
   	if session[:user_id]
-  		redirect_to root_path
+  		redirect_to user_path
   	else
     	@user = User.new
     end
